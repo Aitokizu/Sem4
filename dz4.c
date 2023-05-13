@@ -1,26 +1,30 @@
 #include <stdio.h>
 #include <ctype.h>
-
+#include <math.h>
+#include <string.h>
 int hex_to_int(char hex_string[])
 {
     int result = 0;
+    int len = strlen(hex_string);
+    len--;
 
     for (int i = 0; hex_string[i] != '\0'; i++)  // проходимся по строке и преобразуем каждый символ
     {
         char c = hex_string[i];
         if (isdigit(c)) //если число
         {
-            result = result * 16 + (c - '0');
+            result += (c - '0') * pow(16,len);
         }
         else if (isxdigit(c)) // если шестнадцатеричный символ
         {
-            result = result * 16 + (tolower(c) - 'a' + 10); // символы a-f в числа 10-15
+            result += (tolower(c) - 'a' + 10) * pow(16, len); // символы a-f в числа 10-15
         }
         else
         {
             printf("Error: invalid character '%c'\n", c);
             return 0;
         }
+        len--;
     }
 
     return result;
@@ -28,11 +32,10 @@ int hex_to_int(char hex_string[])
 
 int countOddBits(int num) {
     int count = 0;
-    for (int i = 0; i < (sizeof(int) * 8); i++) { // смотрим все биты в числе.
-        if ((num & 1) && (i % 2 == 0)) { // проверяем чет или нечет
+    for (int i = 0; i < sizeof(num)*8; i += 2) {
+        if ((num & (1 << i)) >> i) { // проверяем, установлен ли i-й бит в числе
             count++;
         }
-        num >>= 1; // сдвигаем число на один бит вправо
     }
     return count;
 }
@@ -43,7 +46,7 @@ int main() {
     scanf("%d", &num);
     printf("Odd bits: %d\n", countOddBits(num));
 
-    char hex_string[100];
+   char hex_string[100];
     printf("Input a hex number: \n");
     scanf("%s", hex_string);
     int result = hex_to_int(hex_string);
