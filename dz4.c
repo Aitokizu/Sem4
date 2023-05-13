@@ -30,10 +30,11 @@ int hex_to_int(char hex_string[])
     return result;
 }
 
-int countOddBits(int num) {
+int countOddBits(char num[]) {
+    int new_num = hex_to_int(num);
     int count = 0;
-    for (int i = 0; i < sizeof(num)*8; i += 2) {
-        if ((num & (1 << i)) >> i) { // проверяем, установлен ли i-й бит в числе
+    for (int i = 0; i < sizeof(new_num)*8; i += 2) {
+        if ((new_num & (1 << i)) >> i) { // проверяем, установлен ли i-й бит в числе
             count++;
         }
     }
@@ -41,10 +42,10 @@ int countOddBits(int num) {
 }
 
 int main() {
-    int num;
+    char num;
     printf("Input number: \n");
-    scanf("%d", &num);
-    printf("Odd bits: %d\n", countOddBits(num));
+    scanf("%s", &num);
+    printf("Odd bits: %d\n", countOddBits(&num));
 
    char hex_string[100];
     printf("Input a hex number: \n");
